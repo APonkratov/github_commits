@@ -1,4 +1,4 @@
-Redmine::Plugin.register :github_commits do
+Redmine::Plugin.register :gitea_commits do
   name 'Gitea commits plugin'
   author 'Aleksandr Ponkratov'
   description 'Redmine plugin to push Gitea updates on Redmine issues directly via Gitea webhook'
