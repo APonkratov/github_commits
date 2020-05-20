@@ -1,13 +1,10 @@
-class GithubCommitsController < ApplicationController
+class GiteaCommitsController < ApplicationController
   
   unloadable
   
   skip_before_filter :check_if_login_required
   skip_before_filter :verify_authenticity_token
 
-  before_action :verify_signature?
-
-  GITHUB_URL = "http://srv39:3000"
   REDMINE_JOURNALIZED_TYPE = "Issue"
   REDMINE_ISSUE_NUMBER_PREFIX = "#"
 
@@ -60,21 +57,9 @@ class GithubCommitsController < ApplicationController
 
   end
 
-  def verify_signature?
-    if request.env['X-Gitea-Signature'].blank? || ENV["GITEA_SECRET_TOKEN"].blank?
-      render json: {success: false},status: 500
-    else
-      request.body.rewind
-      payload_body = request.body.read
-      signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), ENV["GITEA_SECRET_TOKEN"], payload_body)
-      render json: {success: false},status: 500 unless Rack::Utils.secure_compare(signature, request.env['X-Gitea-Signature'])
-    end
-  end
-
   private
 
   def is_commit_to_be_tracked?(commit_obj)
-    commit_obj[:distinct] == true &&  #is it a fresh commit ?
     commit_obj[:message].include?(REDMINE_ISSUE_NUMBER_PREFIX) #Does it include the redmine issue prefix string pattern?
   end
 end
