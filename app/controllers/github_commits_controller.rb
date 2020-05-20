@@ -1,15 +1,10 @@
 class GithubCommitsController < ApplicationController
   
   unloadable
-   
-  skip_before_filter :check_if_login_required
-  skip_before_filter :verify_authenticity_token
   
-  before_action :verify_signature?
-  
-  GITHUB_URL = "https://github.com/"
+  GITHUB_URL = "http://srv39:3000"
   REDMINE_JOURNALIZED_TYPE = "Issue"
-  REDMINE_ISSUE_NUMBER_PREFIX = "#rm"
+  REDMINE_ISSUE_NUMBER_PREFIX = "#"
 
   def create_comment
     resp_json = nil
@@ -61,13 +56,13 @@ class GithubCommitsController < ApplicationController
   end
 
   def verify_signature?
-    if request.env['HTTP_X_HUB_SIGNATURE'].blank? || ENV["GITHUB_SECRET_TOKEN"].blank?
+    if request.env['X-Gitea-Signature'].blank? || ENV["GITEA_SECRET_TOKEN"].blank?
       render json: {success: false},status: 500
     else
       request.body.rewind
       payload_body = request.body.read
-      signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), ENV["GITHUB_SECRET_TOKEN"], payload_body)
-      render json: {success: false},status: 500 unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
+      signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), ENV["GITEA_SECRET_TOKEN"], payload_body)
+      render json: {success: false},status: 500 unless Rack::Utils.secure_compare(signature, request.env['X-Gitea-Signature'])
     end
   end
 
