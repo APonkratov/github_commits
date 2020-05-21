@@ -4,4 +4,4 @@ en:
     no_commit_data_found: "Запрос не содержит данных коммита"
     no_issue_found: "Задача не найдена"
   commit:
-    message: ! "__Gitea Commit__ - __%{author}__ сделал коммит в ветку __%{branch}__ с сообщением: __%{message}__ , [перейти к коммиту](%{commit_url})"
+    message: ! "__Gitea Commit__ - __%{author}__ сделал коммит в ветку __%{branch}__ с сообщением: %{message} , [перейти к коммиту](%{commit_url})"

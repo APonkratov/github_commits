@@ -4,4 +4,4 @@ en:
     no_commit_data_found: "Request does not have commit data."
     no_issue_found: "Issue not found."
   commit:
-    message: ! "__Gitea Commit__ - __%{author}__ has commited on __%{branch}__ branch with message: __%{message}__ , [go to commit](%{commit_url})"
+    message: ! "__Gitea Commit__ - __%{author}__ has commited on __%{branch}__ branch with message: %{message} , [go to commit](%{commit_url})"
